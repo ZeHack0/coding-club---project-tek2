@@ -3,7 +3,7 @@
 
 _G.love = require("love")
 
--- Function for load the sprite of the player_asset --
+-- Function to load the sprite of the player_asset --
 function love.load()
     love.window.setMode(800, 600)
     love.graphics.setBackgroundColor(0, 0.5, 1)
@@ -19,7 +19,7 @@ function love.load()
     test_bar = 450
 end
 
--- Function for use the deplacement --
+-- Function to use the deplacement --
 function love.update(dt)
     player.vy = player.vy + gravity * dt
     player.y = player.y + player.vy * dt
@@ -39,7 +39,7 @@ function love.update(dt)
     end
 end
 
--- function for manage the input --
+-- function to manage the input --
 function love.keypressed(key)
     if key == "space" then
         if player.vy == 0 then
@@ -48,7 +48,7 @@ function love.keypressed(key)
     end
 end
 
--- Function for draw the game --
+-- Function to draw the game --
 function love.draw()
     love.graphics.setColor(0, 1, 0)
     love.graphics.rectangle("fill", test, ground, 1220,200)
