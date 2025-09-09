@@ -3,6 +3,9 @@
 
 _G.love = require("love")
 
+require "block"
+require "player"
+
 -- Function to load the sprite of the player_asset --
 function love.load()
     love.window.setMode(800, 600)
