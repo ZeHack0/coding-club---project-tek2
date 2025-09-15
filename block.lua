@@ -8,13 +8,45 @@
 
 block_1 = {
     pos = {x = 100, y = 100},
-    col_dir = -1,
-    hitbox = {width = 100, height = 20}
+    hitbox = {width = 100, height = 20},
+    col_dir = -1
 }
 
-function print_block_info(bl)
-    print("position x: "..bl.pos.x.." y: "..bl.pos.y)
-    print("hitbox size: "..bl.hitbox.width.."x"..bl.hitbox.height)
-    print("collision direction: "..bl.col_dir)
+ABS_GROUND = {
+    pos = {x = -500, y = 200},
+    hitbox = {width = 1000, height = 500},
+    color = {R = 0, G = 200, B = 0, a = 255},
+    col_dir = -1
+}
+
+function draw_block(bl)
+    local illusion = {
+        pos = {
+            x = bl.pos.x - PLAYER.pos.x,
+            y = bl.pos.y - PLAYER.pos.y
+        },
+        hitbox = {
+            width = bl.hitbox.width - PLAYER.pos.x,
+            height = bl.hitbox.height - PLAYER.pos.y
+        },
+        col_dir = bl.col_dir
+    }
+
+    -- debug
+    print("origin block: ")
+    show_block_info(bl, 0)
+    print("illusion: ")
+    show_block_info(illusion, 0)
+
+    love.graphics.setColor(bl.color.R, bl.color.G, bl.color.B, bl.color.a)
+    love.graphics.rectangle("fill", illusion.pos.x, illusion.pos.y, illusion.hitbox.width, illusion.hitbox.height)
+    love.graphics.setColor(0, 0, 0, 0)
 end
 
+function show_block_info(bl, show_col_dir)
+    print("position x: "..bl.pos.x.." y: "..bl.pos.y)
+    print("hitbox size: "..bl.hitbox.width.."x"..bl.hitbox.height)
+    if show_col_dir then
+        print("collision direction: "..bl.col_dir)
+    end
+end
