@@ -26,6 +26,7 @@ end
 function love.update(dt)
     apply_g_to_entity(PLAYER)
     algin_cam_to_player()
+    hanlde_user_inputs()
     print()
     show_ent_info(PLAYER, 1, 1)
     print()

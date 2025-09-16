@@ -34,17 +34,20 @@ function apply_g_to_entity(ent)
     end
 end
 
+function hanlde_user_inputs() 
+    if love.keyboard.isDown("right") then
+        PLAYER.pos.x = PLAYER.pos.x + PLAYER.speed
+    end
+    if love.keyboard.isDown("left") then
+        PLAYER.pos.x = PLAYER.pos.x - PLAYER.speed
+    end
+end
+
 -- handle user actions:
 function love.keypressed(key)
     if key == "space" then
         PLAYER.jump_time = love.timer.getTime()
         PLAYER.state = 1
-    end
-    if key == "right" then
-        PLAYER.pos.x = PLAYER.pos.x + PLAYER.speed
-    end
-    if key == "left" then
-        PLAYER.pos.x = PLAYER.pos.x - PLAYER.speed
     end
 end
 

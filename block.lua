@@ -25,8 +25,8 @@ function draw_block(bl)
     -- bl will not bee altered nor drawn, illusion is what you will see of bl
     local illusion = {
         pos = {
-            x = bl.pos.x + CAM.x,
-            y = bl.pos.y + CAM.y
+            x = CAM.x - bl.pos.x,
+            y = CAM.y - bl.pos.y
         },
         hitbox = {
             width = bl.hitbox.width,
