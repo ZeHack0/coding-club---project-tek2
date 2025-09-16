@@ -14,18 +14,18 @@ update_calls = 0 -- keeps track of how many times love.update got called
 function love.load()
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setBackgroundColor(0, 0.5, 1)
-    if love.graphics.isCreated() then 
+    if love.graphics.isCreated() then
         print("window exists")
         --love.graphics.setCaption("Sauvez le stream de Pierrick!") it's brokie
     else
         print("window is ded")
     end
-    algin_cam_to_player()
+    align_cam_to_player()
 end
 
 function love.update(dt)
     apply_g_to_entity(PLAYER)
-    algin_cam_to_player()
+    align_cam_to_player()
     hanlde_user_inputs()
     print()
     show_ent_info(PLAYER, 1, 1)
