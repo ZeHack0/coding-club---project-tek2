@@ -1,8 +1,9 @@
 
 -- player states:
+-- -1 = falling
 -- 0 = idle
--- 1 = moving
--- 2 = falling
+-- 1 = jumping
+-- 2
 
 BIG_G = 5
 
@@ -13,25 +14,37 @@ PLAYER = {
     color = {R = 0, G = 200, B = 200, a = 255},
     speed = 5,
     state = 0,
-    illusion = {
-        pos = {x = 100, y = 50},
-        hitbox = {width = 50, height = 50}
-    }
+    jump_time = 0
 }
 
 function apply_g_to_entity(ent)
-    ent.pos.y = ent.pos.y - BIG_G
-    if ent.pos.y - ent.hitbox.height < ABS_GROUND.pos.y then
-        ent.pos.y = ABS_GROUND.pos.y + ent.hitbox.height
+    print("PLAYER jump time: "..PLAYER.jump_time)
+    if PLAYER.state == 1 then --check if player is jumping
+        PLAYER.pos.y = PLAYER.pos.y + PLAYER.speed
+        --cancel player's jump after 2sec or more
+        print("results in: "..love.timer.getTime() - PLAYER.jump_time)
+        if love.timer.getTime() - PLAYER.jump_time >= 1 then
+            PLAYER.state = -1
+        end
+    else --apply gravity
+        ent.pos.y = ent.pos.y - BIG_G
+        if ent.pos.y - ent.hitbox.height < ABS_GROUND.pos.y then
+            ent.pos.y = ABS_GROUND.pos.y + ent.hitbox.height
+        end
     end
 end
 
-function handle_user_actions()
-    if love.keyboard.isDown("right") then
-        PLAYER.pos.x = PLAYER.pos.x - PLAYER.speed
+-- handle user actions:
+function love.keypressed(key)
+    if key == "space" then
+        PLAYER.jump_time = love.timer.getTime()
+        PLAYER.state = 1
     end
-    if love.keyboard.isDown("left") then
+    if key == "right" then
         PLAYER.pos.x = PLAYER.pos.x + PLAYER.speed
+    end
+    if key == "left" then
+        PLAYER.pos.x = PLAYER.pos.x - PLAYER.speed
     end
 end
 

@@ -24,7 +24,6 @@ function love.load()
 end
 
 function love.update(dt)
-    handle_user_actions()
     apply_g_to_entity(PLAYER)
     algin_cam_to_player()
     print()
@@ -34,12 +33,6 @@ function love.update(dt)
     update_calls = update_calls + 1
     print("\27[4;31mUpdate call: "..update_calls..", current fps:"..love.timer.getFPS().."\27[0;0m")
     print("\n\n")
-end
-
-function love.keypressed(key)
-    if key == "space" then
-        PLAYER.pos.y = PLAYER.pos.y + 200
-    end
 end
 
 function love.draw()
