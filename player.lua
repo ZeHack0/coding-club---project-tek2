@@ -11,23 +11,35 @@ PLAYER = {
     hitbox = {width = 50, height = 50},
     color = {R = 0, G = 200, B = 200, a = 255},
     speed = 5,
-    state = 0
+    state = 0,
+    illusion = {
+        pos = {x = 100, y = 50},
+        hitbox = {width = 50, height = 50}
+    }
 }
 
 function apply_g_to_entity(ent)
-    ent.pos.y = ent.pos.y + BIG_G
-    if ent.pos.y + ent.hitbox.height > ABS_GROUND.pos.y then
-        ent.pos.y = ABS_GROUND.pos.y - ent.hitbox.height
+    ent.pos.y = ent.pos.y - BIG_G
+    if ent.pos.y - ent.hitbox.height < ABS_GROUND.pos.y then
+        ent.pos.y = ABS_GROUND.pos.y + ent.hitbox.height
     end
 end
 
 function handle_user_actions()
     if love.keyboard.isDown("right") then
-        PLAYER.pos.x = PLAYER.pos.x + PLAYER.speed
-    end
-    if love.keyboard.isDown("left") then
         PLAYER.pos.x = PLAYER.pos.x - PLAYER.speed
     end
+    if love.keyboard.isDown("left") then
+        PLAYER.pos.x = PLAYER.pos.x + PLAYER.speed
+    end
+end
+
+-- exists because player needs to be centered on the screen
+-- draw entity draws it in the world, not on the screen
+function draw_player()
+    love.graphics.setColor(PLAYER.color.R, PLAYER.color.G, PLAYER.color.B, PLAYER.color.a)
+    love.graphics.rectangle("fill", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, PLAYER.hitbox.width, PLAYER.hitbox.height)
+    love.graphics.setColor(0, 0, 0, 0)
 end
 
 function draw_entity(ent)

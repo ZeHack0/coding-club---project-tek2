@@ -13,7 +13,7 @@ block_1 = {
 }
 
 ABS_GROUND = {
-    pos = {x = -500, y = 200},
+    pos = {x = -500, y = 300},
     hitbox = {width = 1000, height = 500},
     color = {R = 0, G = 200, B = 0, a = 255},
     col_dir = -1
