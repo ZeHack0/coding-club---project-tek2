@@ -23,6 +23,7 @@ function love.update(dt)
     apply_g_to_entity(PLAYER)
     algin_cam_to_player()
     show_cam_info()
+    print()
 end
 
 function love.keypressed(key)

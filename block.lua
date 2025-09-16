@@ -22,12 +22,12 @@ ABS_GROUND = {
 function draw_block(bl)
     local illusion = {
         pos = {
-            x = bl.pos.x - PLAYER.pos.x,
-            y = bl.pos.y - PLAYER.pos.y
+            x = bl.pos.x + CAM.x,
+            y = bl.pos.y + CAM.y
         },
         hitbox = {
-            width = bl.hitbox.width - PLAYER.pos.x,
-            height = bl.hitbox.height - PLAYER.pos.y
+            width = bl.hitbox.width,
+            height = bl.hitbox.height
         },
         col_dir = bl.col_dir
     }
