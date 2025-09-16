@@ -50,10 +50,11 @@ end
 
 -- exists because player needs to be centered on the screen
 -- draw entity draws it in the world, not on the screen
--- it doesn't anymore, idk, good luck to fix the cam
 function draw_player()
     love.graphics.setColor(PLAYER.color.R, PLAYER.color.G, PLAYER.color.B, PLAYER.color.a)
-    love.graphics.rectangle("fill", PLAYER.pos.x, PLAYER.pos.y, PLAYER.hitbox.width, PLAYER.hitbox.height)
+    love.graphics.rectangle("fill", (SCREEN_WIDTH / 2) - (PLAYER.hitbox.width / 2),
+    (SCREEN_HEIGHT / 2) - (PLAYER.hitbox.height / 2),
+    PLAYER.hitbox.width, PLAYER.hitbox.height)
     love.graphics.setColor(0, 0, 0, 0)
 end
 
