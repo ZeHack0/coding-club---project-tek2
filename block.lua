@@ -9,6 +9,9 @@
 
 -- could add a type to blocks to make moving platforms
 
+Block_list = {}
+NB_BLOCKS = 0
+
 Block = {
     x = 0,
     y = 0,
@@ -30,6 +33,8 @@ function Block:new(x, y, width, height, col_dir)
     }
     setmetatable(b, self)
     self.__index = self
+    Block_list[NB_BLOCKS] = b
+    NB_BLOCKS = NB_BLOCKS + 1
     return b
 end
 
@@ -80,10 +85,13 @@ function Block:set_color(r, g, b, a)
 end
 
 
--- function show_block_info(bl, show_col_dir)
---     print("position x: "..bl.pos.x.." y: "..bl.pos.y)
---     print("hitbox size: "..bl.hitbox.width.."x"..bl.hitbox.height)
---     if show_col_dir then
---         print("collision direction: "..bl.col_dir)
---     end
--- end
+---------------------------- Block_list Funcs ------------------------
+
+function block_list_info()
+    print("Block List has "..NB_BLOCKS.." blocks in it:")
+    for i = 0, NB_BLOCKS - 1 do
+        print("    Block "..i..":")
+        print("          coord x: "..Block_list[i].x.." y: "..Block_list[i].y)
+        print("          size "..Block_list[i].width.."x"..Block_list[i].height)
+    end
+end

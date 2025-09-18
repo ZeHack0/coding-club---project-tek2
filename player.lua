@@ -89,11 +89,3 @@ function Player:print_info()
     print("position| x: "..self.x.." y: "..self.y)
     print("hitbox  | "..self.width.."x"..self.height)
 end
--- function show_ent_info(ent, show_pos, show_hitbox)
---     print ("Entity: "..ent.name)
---     if show_pos then
---         print("position| x: "..ent.pos.x.." y: "..ent.pos.y)
---     end
---     if show_hitbox then
---     end
--- end

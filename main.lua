@@ -46,6 +46,8 @@ function love.update(dt)
     print()
     camera.print_info(camera)
     print()
+    block_list_info()
+    print()
     update_calls = update_calls + 1
     print("\27[4;31mUpdate call: "..update_calls..", current fps:"..love.timer.getFPS().."\27[0;0m")
     print("\n\n")
