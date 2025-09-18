@@ -63,7 +63,7 @@ function Player:apply_gravity(camera)
         camera.offset.y = camera.offset.y + self.speed
         --cancel player's jump after some time in seconds
         print("results in: "..love.timer.getTime() - self.jump_time)
-        if love.timer.getTime() - self.jump_time >= 0.8 then
+        if love.timer.getTime() - self.jump_time >= 0.5 then
             self.state = -1 -- set state to falling
         end
     else --apply gravity
