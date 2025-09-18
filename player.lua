@@ -5,7 +5,7 @@
 -- 1 = jumping
 -- 2
 
-BIG_G = 5
+BIG_G = 5 -- gravity value 
 
 Player = {
     name = "player",
@@ -28,6 +28,7 @@ function Player:new(name, x, y, width, height, speed, state, jump_time)
         speed = speed,
         state = state,
         jump_time = jump_time,
+        color = {R = 0, G = 200, B = 200, a = 255}
     }
     setmetatable(t, self)
     self.__index = self
@@ -35,58 +36,64 @@ function Player:new(name, x, y, width, height, speed, state, jump_time)
 end
 
 function Player:jump()
+    if self.state == 1 or self.state == -1 then
+        return
+    end
     self.jump_time = love.timer.getTime()
     self.state = 1
 end
 
-function apply_g_to_entity(ent)
-    print("Player jump time: "..Player.jump_time)
-    if Player.state == 1 then --check if player is jumping
-        Player.pos.y = Player.pos.y + Player.speed
-        --cancel player's jump after 2sec or more
-        print("results in: "..love.timer.getTime() - Player.jump_time)
-        if love.timer.getTime() - Player.jump_time >= 1 then
-            Player.state = -1
-        end
-    else --apply gravity
-        ent.pos.y = ent.pos.y - BIG_G
-        if ent.pos.y - ent.hitbox.height < ABS_GROUND.pos.y then
-            ent.pos.y = ABS_GROUND.pos.y + ent.hitbox.height
-        end
-    end
-end
-
-function hanlde_user_inputs()
+-- would like to handle camera's offset when aligning camera to player
+-- but math is hard, help
+function Player:handle_inputs(camera)
     if love.keyboard.isDown("right") then
-        Player.pos.x = Player.pos.x + Player.speed
+        self.x = self.x + self.speed
+        camera.offset.x = camera.offset.x - self.speed -- move this
     end
     if love.keyboard.isDown("left") then
-        Player.pos.x = Player.pos.x - Player.speed
+        self.x = self.x - self.speed
+        camera.offset.x = camera.offset.x + self.speed -- move this
     end
 end
 
--- exists because player needs to be centered on the screen
--- draw entity draws it in the world, not on the screen
-function draw_player()
-    love.graphics.setColor(110, 110, 110, 200)
-    love.graphics.rectangle("fill", (SCREEN_WIDTH / 2) - (Player.width / 2),
-    (SCREEN_HEIGHT / 2) - (Player.height / 2),
-    Player.width, Player.height)
+function Player:apply_gravity(camera)
+    print("PLAYER jump time: "..self.jump_time)
+    if self.state == 1 then --check if player is jumping
+        self.y = self.y + self.speed
+        camera.offset.y = camera.offset.y + self.speed
+        --cancel player's jump after some time in seconds
+        print("results in: "..love.timer.getTime() - self.jump_time)
+        if love.timer.getTime() - self.jump_time >= 0.8 then
+            self.state = -1 -- set state to falling
+        end
+    else --apply gravity
+        self.y = self.y - BIG_G
+        camera.offset.y = camera.offset.y - BIG_G
+        if self.y - self.height < 300 then
+            self.y = 300 + self.height
+            camera.offset.y = 85
+            self.state = 0 -- set state to idle
+        end
+    end
+end
+
+function Player:draw()
+    love.graphics.setColor(self.color.R, self.color.G, self.color.B, self.color.a)
+    love.graphics.rectangle("fill", (SCREEN_WIDTH / 2) - (self.width / 2),
+    (SCREEN_HEIGHT / 2) - (self.height / 2), self.width, self.height)
     love.graphics.setColor(0, 0, 0, 0)
 end
 
-function draw_entity(ent)
-    love.graphics.setColor(ent.color.R, ent.color.G, ent.color.B, ent.color.a)
-    love.graphics.rectangle("fill", ent.pos.x, ent.pos.y, ent.hitbox.width, ent.hitbox.height)
-    love.graphics.setColor(0, 0, 0, 0)
+function Player:print_info()
+    print("Entity: "..self.name)
+    print("position| x: "..self.x.." y: "..self.y)
+    print("hitbox  | "..self.width.."x"..self.height)
 end
-
-function show_ent_info(ent, show_pos, show_hitbox)
-    print ("Entity: "..ent.name)
-    if show_pos then
-        print("position| x: "..ent.pos.x.." y: "..ent.pos.y)
-    end
-    if show_hitbox then
-        print("hitbox  | "..ent.hitbox.width.."x"..ent.hitbox.height)
-    end
-end
+-- function show_ent_info(ent, show_pos, show_hitbox)
+--     print ("Entity: "..ent.name)
+--     if show_pos then
+--         print("position| x: "..ent.pos.x.." y: "..ent.pos.y)
+--     end
+--     if show_hitbox then
+--     end
+-- end

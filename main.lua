@@ -20,7 +20,13 @@ function love.load()
     else
         print("window is ded")
     end
-    player = Player:new("Pier", 100, 50, 50, 50, 5, 0, 0)
+    --player's x need to start at 0, otherwise camera's offset is fuffed
+    player = Player:new("Pier", 0, 0, 50, 50, 5, 0, 0)
+    camera = Cam:new(
+        (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2),
+        (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2)
+    )
+    ground = Block:new(100, 300, 1000, 500, -1)
 end
 
 function love.keypressed(key)
@@ -33,20 +39,19 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-    --apply_g_to_entity(PLAYER)
-    --align_cam_to_player()
-    --hanlde_user_inputs()
-    --print()
-    --show_ent_info(PLAYER, 1, 1)
-    --print()
-    --show_cam_info()
+    player.handle_inputs(player, camera)
+    player.apply_gravity(player, camera)
+    camera.align_to_entity(camera, player)
+    player.print_info(player)
+    print()
+    camera.print_info(camera)
+    print()
     update_calls = update_calls + 1
-    hanlde_user_inputs()
     print("\27[4;31mUpdate call: "..update_calls..", current fps:"..love.timer.getFPS().."\27[0;0m")
     print("\n\n")
 end
 
 function love.draw()
-    draw_block(ABS_GROUND)
-    draw_player()
+    ground.draw(ground, camera)
+    player.draw(player)
 end
