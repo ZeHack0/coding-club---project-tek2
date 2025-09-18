@@ -36,10 +36,10 @@ function draw_block(bl)
     }
 
     -- debug
-    print("\27[34morigin block: \27[0;0m")
-    show_block_info(bl, 0)
-    print("\27[36millusion: \27[0;0m")
-    show_block_info(illusion, 0)
+    --print("\27[34morigin block: \27[0;0m")
+    --show_block_info(bl, 0)
+    --print("\27[36millusion: \27[0;0m")
+    --show_block_info(illusion, 0)
 
     love.graphics.setColor(bl.color.R, bl.color.G, bl.color.B, bl.color.a)
     love.graphics.rectangle("fill", illusion.pos.x, illusion.pos.y, illusion.hitbox.width, illusion.hitbox.height)

@@ -7,24 +7,46 @@
 
 BIG_G = 5
 
-PLAYER = {
+Player = {
     name = "player",
-    pos = {x = 100, y = 50},
-    hitbox = {width = 50, height = 50},
-    color = {R = 0, G = 200, B = 200, a = 255},
+    x = 0,
+    y = 0,
+    width = 0,
+    height = 0,
     speed = 5,
     state = 0,
     jump_time = 0
 }
 
+function Player:new(name, x, y, width, height, speed, state, jump_time)
+    t = {
+        name = name,
+        x = x,
+        y = y,
+        width = width,
+        height = height,
+        speed = speed,
+        state = state,
+        jump_time = jump_time,
+    }
+    setmetatable(t, self)
+    self.__index = self
+    return t
+end
+
+function Player:jump()
+    self.jump_time = love.timer.getTime()
+    self.state = 1
+end
+
 function apply_g_to_entity(ent)
-    print("PLAYER jump time: "..PLAYER.jump_time)
-    if PLAYER.state == 1 then --check if player is jumping
-        PLAYER.pos.y = PLAYER.pos.y + PLAYER.speed
+    print("Player jump time: "..Player.jump_time)
+    if Player.state == 1 then --check if player is jumping
+        Player.pos.y = Player.pos.y + Player.speed
         --cancel player's jump after 2sec or more
-        print("results in: "..love.timer.getTime() - PLAYER.jump_time)
-        if love.timer.getTime() - PLAYER.jump_time >= 1 then
-            PLAYER.state = -1
+        print("results in: "..love.timer.getTime() - Player.jump_time)
+        if love.timer.getTime() - Player.jump_time >= 1 then
+            Player.state = -1
         end
     else --apply gravity
         ent.pos.y = ent.pos.y - BIG_G
@@ -34,30 +56,22 @@ function apply_g_to_entity(ent)
     end
 end
 
-function hanlde_user_inputs() 
+function hanlde_user_inputs()
     if love.keyboard.isDown("right") then
-        PLAYER.pos.x = PLAYER.pos.x + PLAYER.speed
+        Player.pos.x = Player.pos.x + Player.speed
     end
     if love.keyboard.isDown("left") then
-        PLAYER.pos.x = PLAYER.pos.x - PLAYER.speed
-    end
-end
-
--- handle user actions:
-function love.keypressed(key)
-    if key == "space" then
-        PLAYER.jump_time = love.timer.getTime()
-        PLAYER.state = 1
+        Player.pos.x = Player.pos.x - Player.speed
     end
 end
 
 -- exists because player needs to be centered on the screen
 -- draw entity draws it in the world, not on the screen
 function draw_player()
-    love.graphics.setColor(PLAYER.color.R, PLAYER.color.G, PLAYER.color.B, PLAYER.color.a)
-    love.graphics.rectangle("fill", (SCREEN_WIDTH / 2) - (PLAYER.hitbox.width / 2),
-    (SCREEN_HEIGHT / 2) - (PLAYER.hitbox.height / 2),
-    PLAYER.hitbox.width, PLAYER.hitbox.height)
+    love.graphics.setColor(110, 110, 110, 200)
+    love.graphics.rectangle("fill", (SCREEN_WIDTH / 2) - (Player.width / 2),
+    (SCREEN_HEIGHT / 2) - (Player.height / 2),
+    Player.width, Player.height)
     love.graphics.setColor(0, 0, 0, 0)
 end
 

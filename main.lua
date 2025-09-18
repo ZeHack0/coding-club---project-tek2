@@ -20,23 +20,33 @@ function love.load()
     else
         print("window is ded")
     end
-    align_cam_to_player()
+    player = Player:new("Pier", 100, 50, 50, 50, 5, 0, 0)
+end
+
+function love.keypressed(key)
+    if key == 'escape' then
+        love.event.quit()
+    end
+    if key == "space" then
+        player.jump(player)
+    end
 end
 
 function love.update(dt)
-    apply_g_to_entity(PLAYER)
-    align_cam_to_player()
-    hanlde_user_inputs()
-    print()
-    show_ent_info(PLAYER, 1, 1)
-    print()
-    show_cam_info()
+    --apply_g_to_entity(PLAYER)
+    --align_cam_to_player()
+    --hanlde_user_inputs()
+    --print()
+    --show_ent_info(PLAYER, 1, 1)
+    --print()
+    --show_cam_info()
     update_calls = update_calls + 1
+    hanlde_user_inputs()
     print("\27[4;31mUpdate call: "..update_calls..", current fps:"..love.timer.getFPS().."\27[0;0m")
     print("\n\n")
 end
 
 function love.draw()
-    draw_player()
     draw_block(ABS_GROUND)
+    draw_player()
 end
