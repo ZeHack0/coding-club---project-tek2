@@ -47,8 +47,14 @@ end
 -- but math is hard, help
 function Player:handle_inputs(camera)
     if love.keyboard.isDown("right") then
-        self.x = self.x + self.speed
-        camera.offset.x = camera.offset.x - self.speed -- move this
+        local bl_collided = self.check_collision(self, self.x + self.speed, self.y)
+        if bl_collided.width > 0 then
+            --camera.offset.x = camera.offset.x - (bl_collided.x - (self.width / 2))
+            self.x = bl_collided.x - self.width
+        else
+            self.x = self.x + self.speed
+            camera.offset.x = camera.offset.x - self.speed -- move this
+        end
     end
     if love.keyboard.isDown("left") then
         self.x = self.x - self.speed
@@ -76,6 +82,23 @@ function Player:apply_gravity(camera)
         end
     end
 end
+
+-- checks position xy with player's width and height to see if it would collide
+-- with any block in Block_list
+-- return first block encountered that collides with it (this can cause issues)
+-- does not check for the direction of the collision for now
+function Player:check_collision(x, y)
+    for i = 0, NB_BLOCKS - 1 do
+        local bl = Block_list[i]
+        if (x + self.width >= bl.x and x <= bl.x + bl.width and
+            y + self.height >= bl.y and y <= bl.y + bl.height) then
+                print("collided with block id: "..i)
+            return bl
+        end
+    end
+    return NETHER_BLOCK
+end
+
 
 function Player:draw()
     love.graphics.setColor(self.color.R, self.color.G, self.color.B, self.color.a)

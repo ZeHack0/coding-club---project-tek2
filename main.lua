@@ -26,7 +26,8 @@ function love.load()
         (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2),
         (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2)
     )
-    ground = Block:new(100, 300, 1000, 500, -1)
+    ground = Block:new(0, 300, 1000, 500, -1)
+    b1 = Block:new(500, 150, 20, 50, 4)
 end
 
 function love.keypressed(key)

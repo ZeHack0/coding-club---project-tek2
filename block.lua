@@ -9,8 +9,8 @@
 
 -- could add a type to blocks to make moving platforms
 
-Block_list = {}
-NB_BLOCKS = 0
+Block_list = {} -- list containing all blocks created
+NB_BLOCKS = 0 -- number of blocks in the list and index
 
 Block = {
     x = 0,
@@ -18,6 +18,15 @@ Block = {
     width = 0,
     height = 0,
     col_dir = 4,
+    color = {r = 0, g = 1, b = 0, a = 1}
+}
+
+NETHER_BLOCK = { -- used to send a "null" block when no collision detected when movin
+    x = -1,
+    y = -1,
+    width = -1,
+    height = -1,
+    col_dir = 69,
     color = {r = 0, g = 1, b = 0, a = 1}
 }
 
