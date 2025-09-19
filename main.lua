@@ -22,12 +22,12 @@ function love.load()
     end
     --player's x need to start at 0, otherwise camera's offset is fuffed
     player = Player:new("Pier", 0, 0, 50, 50, 5, 0, 0)
-    camera = Cam:new(
-        (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2),
+    camera = Cam:new(player.x, player.y - (player.height / 2),
         (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2)
     )
-    ground = Block:new(0, 300, 1000, 500, -1)
-    b1 = Block:new(500, 150, 20, 50, 4)
+    ground = Block:new(0, 0, 1000, 500, -1)
+    b1 = Block:new(500, 150, 20, 150, 4)
+    b1.set_color(b1, 1, 0, 0, 1)
 end
 
 function love.keypressed(key)
@@ -41,7 +41,8 @@ end
 
 function love.update(dt)
     player.handle_inputs(player, camera)
-    player.apply_gravity(player, camera)
+    player.apply_gravity(player)
+    Player.apply_movements(player, camera)
     camera.align_to_entity(camera, player)
     player.print_info(player)
     print()
@@ -50,7 +51,7 @@ function love.update(dt)
     block_list_info()
     print()
     update_calls = update_calls + 1
-    print("\27[4;31mUpdate call: "..update_calls..", current fps:"..love.timer.getFPS().."\27[0;0m")
+    --print("\27[4;31mUpdate call: "..update_calls..", current fps:"..love.timer.getFPS().."\27[0;0m")
     print("\n\n")
 end
 

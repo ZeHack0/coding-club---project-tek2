@@ -17,7 +17,7 @@ end
 -- math is hard lmao
 function Cam:align_to_entity(ent)
     self.pos.x = ent.x + (ent.width / 2)
-    self.pos.y = ent.y + (ent.height / 2)
+    self.pos.y = ent.y - (ent.height / 2)
 end
 
 function Cam:print_info()

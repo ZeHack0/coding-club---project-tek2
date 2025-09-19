@@ -60,13 +60,13 @@ function Block:draw(camera)
     }
 
     -- debug
-    print("\27[34morigin block: \27[0;0m")
-    print("x: "..self.x.." y: "..self.y)
-    print(self.width.."x"..self.height)
-    print("\27[36millusion: \27[0;0m")
-    print("x: "..illusion.x.." y: "..illusion.y)
-    print(illusion.width.."x"..illusion.height)
-    print()
+    -- print("\27[34morigin block: \27[0;0m")
+    -- print("x: "..self.x.." y: "..self.y)
+    -- print(self.width.."x"..self.height)
+    -- print("\27[36millusion: \27[0;0m")
+    -- print("x: "..illusion.x.." y: "..illusion.y)
+    -- print(illusion.width.."x"..illusion.height)
+    -- print()
 
     love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
     love.graphics.rectangle("fill", illusion.x, illusion.y,
