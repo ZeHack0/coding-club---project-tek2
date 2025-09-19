@@ -55,6 +55,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    ground.draw(ground, camera)
+    draw_block_list(camera)
     player.draw(player)
 end

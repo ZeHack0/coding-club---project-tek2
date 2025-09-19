@@ -90,9 +90,9 @@ end
 function Player:check_collision(x, y)
     for i = 0, NB_BLOCKS - 1 do
         local bl = Block_list[i]
-        if (x + self.width >= bl.x and x <= bl.x + bl.width and
-            y + self.height >= bl.y and y <= bl.y + bl.height) then
-                print("collided with block id: "..i)
+        if (x + self.width > bl.x and x < bl.x + bl.width and
+            y + self.height < bl.y and y > bl.y + bl.height) then
+                print("Coordinates x: "..x.." y: "..y.." will collide with block id: "..i)
             return bl
         end
     end

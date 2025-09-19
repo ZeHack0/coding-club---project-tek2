@@ -104,3 +104,9 @@ function block_list_info()
         print("          size "..Block_list[i].width.."x"..Block_list[i].height)
     end
 end
+
+function draw_block_list(camera)
+    for i = 0, NB_BLOCKS - 1 do
+        Block_list[i].draw(Block_list[i], camera)
+    end
+end
