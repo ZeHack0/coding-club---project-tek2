@@ -5,7 +5,13 @@
 -- 1 = jumping
 -- 2
 
-BIG_G = 5 -- gravity value 
+BIG_G = 5 -- gravity value
+
+--every 0.1sec, reduce player jumpspeed by 1 until it reaches 0
+-- once jumpspeed < BIG_G, player is falling
+-- once jumpspeed = 0, set it back to default (10) and stop using it until next jump
+-- or maybe leave it to 0 and when jump is calling throw at 10
+-- so you don't need to handle 
 
 -- have a new var for the next position wich is one that's going to change through
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
@@ -18,20 +24,25 @@ Player = {
     speed = 5,
     state = 0,
     jump_time = 0
+    jump_speed = 10
 }
 
-function Player:new(name, x, y, width, height, speed, state, jump_time)
+
+-- marked as need change means make it simpler for the kiddos at the coding club
+-- good luck
+function Player:new(name, x, y, width, height, speed, state)
     t = {
         name = name,
         x = x,
         y = y,
-        nx = x, -- next x | used to add up all movement before doing them
-        xy = y, -- next y | used to add up all movement before doing them
+        nx = x, -- next x | used to add up all movement before doing them | need change
+        xy = y, -- next y | used to add up all movement before doing them | need change
         width = width,
         height = height,
         speed = speed,
         state = state,
-        jump_time = jump_time,
+        jump_time = 0,
+        jump_speed = 10
         color = {R = 0, G = 200, B = 200, a = 255}
     }
     setmetatable(t, self)

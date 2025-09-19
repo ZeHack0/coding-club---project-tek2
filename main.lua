@@ -21,12 +21,12 @@ function love.load()
         print("window is ded")
     end
     --player's x need to start at 0, otherwise camera's offset is fuffed
-    player = Player:new("Pier", 0, 0, 50, 50, 5, 0, 0)
+    player = Player:new("Pier", 0, 0, 50, 50, 5, 0)
     camera = Cam:new(player.x, player.y - (player.height / 2),
         (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2)
     )
     ground = Block:new(0, 0, 1000, 500, -1)
-    b1 = Block:new(500, 150, 20, 150, 4)
+    b1 = Block:new(500, 10, 20, 150, 4)
     b1.set_color(b1, 1, 0, 0, 1)
 end
 

@@ -51,6 +51,7 @@ end
 ---------------------------- Block Draw ------------------------------
 
 -- self will not bee altered nor drawn, illusion is what you will see of it
+-- AND WHY IS BLOCK1 IN THE DAMN GROUND ON SCREEN BUT NOT IN COORD????
 function Block:draw(camera)
     local illusion = {
         x = self.x + camera.offset.x,
