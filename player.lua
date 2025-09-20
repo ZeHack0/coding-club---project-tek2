@@ -1,17 +1,12 @@
-
--- player states:
--- -1 = falling
--- 0 = idle
--- 1 = jumping
+-- possible player states:
+FALLING = -1
+IDLE = 0
+JUMPING = 1
 -- 2
 
-BIG_G = 5 -- gravity value
+DEFAULT_JUMP_SPEED = 20
 
---every 0.1sec, reduce player jumpspeed by 1 until it reaches 0
--- once jumpspeed < BIG_G, player is falling
--- once jumpspeed = 0, set it back to default (10) and stop using it until next jump
--- or maybe leave it to 0 and when jump is calling throw at 10
--- so you don't need to handle 
+BIG_G = 5 -- gravity value
 
 -- have a new var for the next position wich is one that's going to change through
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
@@ -31,12 +26,12 @@ Player = {
 -- marked as need change means make it simpler for the kiddos at the coding club
 -- good luck
 function Player:new(name, x, y, width, height, speed, state)
-    t = {
+    p = {
         name = name,
         x = x,
         y = y,
-        nx = x, -- next x | used to add up all movement before doing them | need change
-        xy = y, -- next y | used to add up all movement before doing them | need change
+        lx = x, -- last x | used to handle camera movements once player is done moving
+        ly = y, -- last y | used to handle camera movements once player is done moving
         width = width,
         height = height,
         speed = speed,
@@ -45,10 +40,13 @@ function Player:new(name, x, y, width, height, speed, state)
         jump_speed = 10,
         color = {R = 0, G = 200, B = 200, a = 255}
     }
-    setmetatable(t, self)
+    setmetatable(p, self)
     self.__index = self
-    return t
+    return p
 end
+
+
+---------------------------- Character interactions ------------------
 
 -- checks position xy with player's width and height to see if it would collide
 -- with any block in Block_list
@@ -74,65 +72,102 @@ function Player:check_collision(x, y)
     return NETHER_BLOCK
 end
 
+
+--every 0.1sec, reduce player jumpspeed by 1 until it reaches 0
+-- once jumpspeed < BIG_G, player is falling
+-- once jumpspeed = 0, set it back to default (10) and stop using it until next jump
+-- or maybe leave it to 0 and when jump is calling throw at 10
+-- so you don't need to handle 
 function Player:jump()
-    if self.state == 1 or self.state == -1 then
-        return
+    if self.state == JUMPING or self.state == FALLING then
+        return -- if player is already jumping or falling, do nothing
     end
     self.jump_time = love.timer.getTime()
-    self.state = 1
+    self.state = JUMPING
+    self.jump_speed = DEFAULT_JUMP_SPEED
 end
 
--- would like to handle camera's offset when aligning camera to player
--- but math is hard, help
+
+---------------------------- User interactions -----------------------
+
 function Player:handle_inputs(camera)
     if love.keyboard.isDown("right") then
         local bl_collided = self.check_collision(self, self.x + self.speed, self.y)
         if bl_collided.width > 0 then
-            self.nx = bl_collided.x - self.width
+            self.x = bl_collided.x - self.width
         else
-            self.nx = self.x + self.speed
+            self.x = self.x + self.speed
         end
     end
     if love.keyboard.isDown("left") then
         local bl_collided = self.check_collision(self, self.x - self.speed, self.y)
         if bl_collided.width > 0 then
-            self.nx = bl_collided.x + bl_collided.width
+            self.x = bl_collided.x + bl_collided.width
         else
-            self.nx = self.x - self.speed
+            self.x = self.x - self.speed
         end
     end
 end
 
+-- keys that should react only when pressed and not continuously pressed
+function love.keypressed(key)
+    if key == 'escape' then
+        love.event.quit()
+    end
+    if key == "space" then
+        player.jump(player)
+    end
+end
+
+-------------- move to player interactions
 function Player:apply_gravity()
-    -- print("PLAYER jump time: "..self.jump_time)
-    -- if self.state == 1 then --check if player is jumping
-    --     self.y = self.y + self.speed
-    --     camera.offset.y = camera.offset.y + self.speed
-    --     --cancel player's jump after some time in seconds
-    --     print("results in: "..love.timer.getTime() - self.jump_time)
-    --     if love.timer.getTime() - self.jump_time >= 0.5 then
-    --         self.state = -1 -- set state to falling
-    --     end
-    -- else --apply gravity
-    self.ny = self.y - BIG_G
-    local colliding_bl = self.check_collision(self, self.x, self.ny)
-    if colliding_bl.width > 0 then --player collided with smth
-        print("\27[4;31mCOLLIDING EAFEAFAFAEFEF")
-        self.ny = colliding_bl.y + self.height --set player on top of it
-        if self.state == -1 then --if player was falling
-            self.state = 0 --set his state to idle
+    self.y = self.y - BIG_G
+    local bl_collided = self.check_collision(self, self.x, self.y)
+    if bl_collided.width > 0 then --player collided with smth
+        print("UN SOL!!!! NO WAY")
+        self.y = bl_collided.y + self.height --set player on top of it
+        if self.state == FALLING then
+            self.state = IDLE
         end
+    elseif not (self.state == JUMPING) then
+        self.state = FALLING
     end
 end
 
+
+-------------- move to player interactions
 --moves the player from its current position to next verified position
 --and adapt the camera's offset
 function Player:apply_movements(camera)
-    camera.offset.x = camera.offset.x - (self.nx - self.x)
-    self.x = self.nx
-    camera.offset.y = camera.offset.y + (self.ny - self.y)
-    self.y = self.ny
+    --handle jump here
+    if self.jump_speed > 0 then
+        if love.timer.getTime() - self.jump_time >= 0.15 then
+            self.jump_speed = -1
+            self.jump_time = love.timer.getTime()
+        end
+    end
+    if self.state == JUMPING then
+        if self.jump_speed < BIG_G then
+            self.state = FALLING
+        else
+            local bl_collided = self.check_collision(self, self.x, self.y + self.jump_speed)
+            if bl_collided.width > 0 then --player collided to a block above him
+                self.y = bl_collided.y - bl_collided.height
+                self.state = FALLING
+            else
+                self.y = self.y + self.jump_speed
+            end
+        end
+    end
+    --manage camera
+    camera.offset.x = camera.offset.x - (self.x - self.lx)
+    self.lx = self.x
+    camera.offset.y = camera.offset.y + (self.y - self.ly)
+    self.ly = self.y
 end
+
+
+---------------------------- Player Draw -----------------------------
 
 function Player:draw()
     love.graphics.setColor(self.color.R, self.color.G, self.color.B, self.color.a)
@@ -140,6 +175,9 @@ function Player:draw()
     (SCREEN_HEIGHT / 2) - (self.height / 2), self.width, self.height)
     love.graphics.setColor(0, 0, 0, 0)
 end
+
+
+---------------------------- Player Debug ----------------------------
 
 function Player:print_info()
     print("Entity: "..self.name)
