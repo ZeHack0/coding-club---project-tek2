@@ -55,7 +55,7 @@ end
 function Block:draw(camera)
     local illusion = {
         x = self.x + camera.offset.x,
-        y = self.y + camera.offset.y,
+        y = camera.offset.y - self.y,
         width = self.width,
         height = self.height
     }

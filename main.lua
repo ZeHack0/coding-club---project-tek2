@@ -29,6 +29,7 @@ function love.load()
     ground = Block:new(0, 0, 1000, 500, -1)
     b1 = Block:new(500, 100, 20, 150, 4)
     b1.set_color(b1, 1, 0, 0, 1)
+    b2 = Block:new(1050, 50, 700, 500, 4)
 end
 
 

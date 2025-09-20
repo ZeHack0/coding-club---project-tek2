@@ -128,7 +128,7 @@ end
 ---------------------------- User interactions -----------------------
 
 function Player:handle_inputs(camera)
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
         local bl_collided = self.check_collision(self, self.x + self.speed, self.y)
         if bl_collided.width > 0 then
             self.x = bl_collided.x - self.width
@@ -136,7 +136,7 @@ function Player:handle_inputs(camera)
             self.x = self.x + self.speed
         end
     end
-    if love.keyboard.isDown("left") then
+    if love.keyboard.isDown("left") or love.keyboard.isDown("q") then
         local bl_collided = self.check_collision(self, self.x - self.speed, self.y)
         if bl_collided.width > 0 then
             self.x = bl_collided.x + bl_collided.width
