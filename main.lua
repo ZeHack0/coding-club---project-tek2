@@ -27,7 +27,7 @@ function love.load()
         (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2)
     )
     ground = Block:new(0, 0, 1000, 500, -1)
-    b1 = Block:new(500, 10, 20, 150, 4)
+    b1 = Block:new(500, 100, 20, 150, 4)
     b1.set_color(b1, 1, 0, 0, 1)
 end
 
