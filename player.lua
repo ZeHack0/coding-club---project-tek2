@@ -23,7 +23,7 @@ Player = {
     height = 0,
     speed = 5,
     state = 0,
-    jump_time = 0
+    jump_time = 0,
     jump_speed = 10
 }
 
@@ -42,7 +42,7 @@ function Player:new(name, x, y, width, height, speed, state)
         speed = speed,
         state = state,
         jump_time = 0,
-        jump_speed = 10
+        jump_speed = 10,
         color = {R = 0, G = 200, B = 200, a = 255}
     }
     setmetatable(t, self)
