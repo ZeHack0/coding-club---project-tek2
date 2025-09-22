@@ -4,7 +4,7 @@ IDLE = 0
 JUMPING = 1
 -- 2
 
-DEFAULT_JUMP_SPEED = 20
+DEFAULT_JUMP_SPEED = 12
 
 BIG_G = 5 -- gravity value
 
@@ -100,8 +100,8 @@ end
 function Player:apply_movements(camera)
     --handle jump
     if self.jump_speed > 0 then
-        if love.timer.getTime() - self.jump_time >= 0.15 then
-            self.jump_speed = -1
+        if love.timer.getTime() - self.jump_time >= 0.08 then
+            self.jump_speed = self.jump_speed - 1
             self.jump_time = love.timer.getTime()
         end
     end
@@ -113,6 +113,7 @@ function Player:apply_movements(camera)
             if bl_collided.width > 0 then --player collided to a block above him
                 self.y = bl_collided.y - bl_collided.height
                 self.state = FALLING
+                self.jump_speed = BIG_G - 1
             else
                 self.y = self.y + self.jump_speed
             end
