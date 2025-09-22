@@ -105,7 +105,7 @@ function Player:apply_movements(camera)
             self.jump_time = love.timer.getTime()
         end
     end
-    if self.state == JUMPING then
+    if self.state == JUMPING or self.state == FALLING then
         if self.jump_speed < BIG_G then
             self.state = FALLING
         else
