@@ -1,4 +1,4 @@
-# 🎮 Projet : Pierrick’s Adventure
+# 🎮 Projet : Sauver le stream de Pierrick !
 
 Pierrick, streamer accomplie avec plus de 15 viewers par stream (parfois 16),
 s'apperçoie un jour avant de lancer son live, que son modérateur, Alexis, jaloux de ça notoriété,
