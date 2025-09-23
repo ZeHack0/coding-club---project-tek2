@@ -23,12 +23,16 @@ Ce repo est un exercice pédagogique qui permet d’apprendre :
 ---
 
 ## 🚀 Lancer le projet  
-1. Installez [LÖVE2D](https://love2d.org/).  
-2. Clonez le repo :  
+1. Accédez et prenez connaissance du sujet
+   ```bash
+   https://www.notion.so/Sauver-le-stream-de-Pierrick-276c51eb9701803c893aead2b5284921
+   ```
+2. Installez [LÖVE2D](https://love2d.org/).  
+3. Clonez le repo :  
    ```bash
    git clone https://github.com/ZeHack0/coding-club---project-tek2.git
    ```  
-3. Lancez le jeu :  
+4. Lancez le jeu :  
    ```bash
    love .
    ```  
