@@ -39,7 +39,7 @@ end
 
 function run_game(dt)
     player.handle_inputs(player, camera)
-    player.apply_gravity(player)
+    player.unstuck(player)
     Player.apply_movements(player, camera)
     camera.align_to_entity(camera, player)
     player.print_info(player)

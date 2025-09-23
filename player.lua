@@ -4,9 +4,9 @@ IDLE = 0
 JUMPING = 1
 -- 2
 
-DEFAULT_JUMP_SPEED = 12
+DEFAULT_JUMP_SPEED = 100
 
-BIG_G = 5 -- gravity value
+BIG_G = -50 -- gravity value
 
 -- have a new var for the next position wich is one that's going to change through
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
@@ -81,17 +81,12 @@ function Player:jump()
     self.jump_speed = DEFAULT_JUMP_SPEED
 end
 
-function Player:apply_gravity()
-    self.y = self.y - BIG_G
+function Player:unstuck()
     local bl_collided = self.check_collision(self, self.x, self.y)
     if bl_collided.width > 0 then --player collided with smth
         print("UN SOL!!!! NO WAY")
         self.y = bl_collided.y + self.height --set player on top of it
-        if self.state == FALLING then
-            self.state = IDLE
-        end
-    elseif not (self.state == JUMPING) then
-        self.state = FALLING
+        self.state = IDLE
     end
 end
 
@@ -99,27 +94,35 @@ end
 --and adapt the camera's offset
 function Player:apply_movements(camera)
     --handle jump
-    if self.jump_speed > 0 then
+    if self.state == JUMPING or self.state == FALLING then
         if love.timer.getTime() - self.jump_time >= 0.08 then
-            self.jump_speed = self.jump_speed - 1
+            self.y = self.y + 0.08 * self.jump_speed
+            self.jump_speed = self.jump_speed + 0.08 * BIG_G
             self.jump_time = love.timer.getTime()
         end
+
     end
-    if self.state == JUMPING or self.state == FALLING then
-        if self.jump_speed < BIG_G then
-            self.state = FALLING
-        else
-            local bl_collided = self.check_collision(self, self.x, self.y + self.jump_speed)
-            if bl_collided.width > 0 then --player collided to a block above him
-                self.y = bl_collided.y - bl_collided.height
-                self.state = FALLING
-                self.jump_speed = BIG_G - 1
-            else
-                self.y = self.y + self.jump_speed
-            end
-        end
-    end
-    --manage camera
+        -- if self.jump_speed > 0 then
+        --     if love.timer.getTime() - self.jump_time >= 0.08 then
+        --         self.jump_speed = self.jump_speed - 1
+        --         self.jump_time = love.timer.getTime()
+        --     end
+        -- end
+        -- if self.state == JUMPING or self.state == FALLING then
+        --     if self.jump_speed < BIG_G then
+        --         self.state = FALLING
+        --     else
+        --         local bl_collided = self.check_collision(self, self.x, self.y + self.jump_speed)
+        --         if bl_collided.width > 0 then --player collided to a block above him
+        --             self.y = bl_collided.y - bl_collided.height
+        --             self.state = FALLING
+        --             self.jump_speed = BIG_G - 1
+        --         else
+        --             self.y = self.y + self.jump_speed
+        --         end
+        --     end
+        -- end
+    -- manage camera
     camera.offset.x = camera.offset.x - (self.x - self.lx)
     self.lx = self.x
     camera.offset.y = camera.offset.y + (self.y - self.ly)
