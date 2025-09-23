@@ -1,8 +1,8 @@
 # 🎮 Projet : Sauver le stream de Pierrick !
 
-Pierrick, streamer accomplie avec plus de 15 viewers par stream (parfois 16),
-s'apperçoie un jour avant de lancer son live, que son modérateur, Alexis, jaloux de ça notoriété,
-a volé sa caméra sacrée qui lui a permis de passer la bar des 10 followers.
+Pierrick, streamer accompli, avec plus de 15 viewers par stream (parfois 16),
+s'aperçoit un jour avant de lancer son live que son modérateur, Alexis, jaloux de sa notoriété,
+a volé sa caméra sacrée qui l'accompagnait à l'obtention de ses 10 premiers followers.
 
 ---
 
