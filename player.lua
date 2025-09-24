@@ -124,10 +124,6 @@ function Player:apply_movements(camera)
         --     end
         -- end
     -- manage camera
-    camera.offset.x = camera.offset.x - (self.x - self.lx)
-    self.lx = self.x
-    camera.offset.y = camera.offset.y + (self.y - self.ly)
-    self.ly = self.y
 end
 
 ---------------------------- User interactions -----------------------
