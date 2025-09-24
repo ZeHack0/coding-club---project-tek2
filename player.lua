@@ -38,7 +38,8 @@ function Player:new(name, x, y, width, height, speed, state)
         state = state,
         jump_time = 0,
         jump_speed = 10,
-        color = {R = 0, G = 200, B = 200, a = 255}
+        color = {R = 1, G = 1, B = 1, a = 255},
+        image = love.graphics.newImage("sprites/pierrick_v0.png")
     }
     setmetatable(p, self)
     self.__index = self
@@ -165,8 +166,8 @@ end
 
 function Player:draw()
     love.graphics.setColor(self.color.R, self.color.G, self.color.B, self.color.a)
-    love.graphics.rectangle("fill", (SCREEN_WIDTH / 2) - (self.width / 2),
-    (SCREEN_HEIGHT / 2) - (self.height / 2), self.width, self.height)
+    love.graphics.draw(self.image, (SCREEN_WIDTH / 2) - (self.width / 2),
+        (SCREEN_HEIGHT / 2) - (self.height / 2), 0, self.width / self.image:getWidth(), self.height / self.image:getHeight())
     love.graphics.setColor(0, 0, 0, 0)
 end
 
