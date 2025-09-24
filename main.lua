@@ -18,13 +18,6 @@ require "world_init"
 function love.load()
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
     love.graphics.setBackgroundColor(0, 0.5, 1)
-    if love.graphics.isCreated() then
-        print("window exists")
-        --love.graphics.setCaption("Sauvez le stream de Pierrick!") it's brokie
-    else
-        print("window is ded")
-    end
-    --player's x need to start at 0, otherwise camera's offset is fuffed
     main_init()
     world_init()
 end
