@@ -142,10 +142,6 @@ function Player:apply_movement_with_collision(camera)
             self.jump_time = love.timer.getTime()
         end
     end
-
-    -- manage camera
-    camera.offset.x = camera.offset.x - (self.x - self.lx)
-    camera.offset.y = camera.offset.y + (self.y - self.ly)
 end
 
 
