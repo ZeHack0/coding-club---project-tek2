@@ -1,12 +1,10 @@
 -- possible player states:
-FALLING = -1
 IDLE = 0
 JUMPING = 1
--- 2
 
-DEFAULT_JUMP_SPEED = 100
+DEFAULT_JUMP_SPEED = 850 -- pixels/second
 
-BIG_G = -50 -- gravity value
+GRAVITY = -1700 -- pixels/seconde²
 
 -- have a new var for the next position wich is one that's going to change through
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
@@ -46,107 +44,14 @@ function Player:new(name, x, y, width, height, speed, state)
 end
 
 
----------------------------- Character interactions ------------------
-
--- checks position xy with player's width and height to see if it would collide
--- with any block in Block_list
--- return first block encountered that collides with it (this can cause issues)
--- does not check for the direction of the collision for now
-function Player:check_collision(x, y)
-    print()
-    print("checking collision for x: "..x.." y: "..y)
-    for i = 0, NB_BLOCKS - 1 do
-        print("block: "..i)
-        local bl = Block_list[i]
-        if (x < bl.x + bl.width and
-            x + self.width > bl.x and
-            y > bl.y - bl.height and
-            y - self.height < bl.y
-            ) then
-                print("Coordinates x: "..x.." y: "..y.." will collide with block id: "..i.."\n")
-                return bl
-        end
-    end
-        print("no collision found")
-        print()
-        return NETHER_BLOCK
-end
-
-function Player:jump()
-    if self.state == JUMPING or self.state == FALLING then
-        return -- if player is already jumping or falling, do nothing
-    end
-    self.jump_time = love.timer.getTime()
-    self.state = JUMPING
-    self.jump_speed = DEFAULT_JUMP_SPEED
-end
-
-function Player:unstuck()
-    local bl_collided = self.check_collision(self, self.x, self.y)
-    if bl_collided.width > 0 then --player collided with smth
-        print("UN SOL!!!! NO WAY")
-        self.y = bl_collided.y + self.height --set player on top of it
-        self.state = IDLE
-    end
-end
-
---moves the player from its current position to next verified position
---and adapt the camera's offset
-function Player:apply_movements(camera)
-    --handle jump
-    if self.state == JUMPING or self.state == FALLING then
-        if love.timer.getTime() - self.jump_time >= 0.08 then
-            self.y = self.y + 0.08 * self.jump_speed
-            self.jump_speed = self.jump_speed + 0.08 * BIG_G
-            self.jump_time = love.timer.getTime()
-        end
-
-    end
-        -- if self.jump_speed > 0 then
-        --     if love.timer.getTime() - self.jump_time >= 0.08 then
-        --         self.jump_speed = self.jump_speed - 1
-        --         self.jump_time = love.timer.getTime()
-        --     end
-        -- end
-        -- if self.state == JUMPING or self.state == FALLING then
-        --     if self.jump_speed < BIG_G then
-        --         self.state = FALLING
-        --     else
-        --         local bl_collided = self.check_collision(self, self.x, self.y + self.jump_speed)
-        --         if bl_collided.width > 0 then --player collided to a block above him
-        --             self.y = bl_collided.y - bl_collided.height
-        --             self.state = FALLING
-        --             self.jump_speed = BIG_G - 1
-        --         else
-        --             self.y = self.y + self.jump_speed
-        --         end
-        --     end
-        -- end
-    -- manage camera
-    camera.offset.x = camera.offset.x - (self.x - self.lx)
-    self.lx = self.x
-    camera.offset.y = camera.offset.y + (self.y - self.ly)
-    self.ly = self.y
-end
-
 ---------------------------- User interactions -----------------------
 
-function Player:handle_inputs(camera)
+function Player:move()
     if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
-        local bl_collided = self.check_collision(self, self.x + self.speed, self.y)
-        if bl_collided.width > 0 then
-            self.x = bl_collided.x - self.width
-        else
-            self.x = self.x + self.speed
-        end
+        self.x = self.x + self.speed
     end
     if love.keyboard.isDown("left") or love.keyboard.isDown("q") then
-        local bl_collided = self.check_collision(self, self.x - self.speed, self.y)
-        if bl_collided.width > 0 then
-            self.x = bl_collided.x + bl_collided.width
-        else
-            self.x = self.x - self.speed
-        end
+        self.x = self.x - self.speed
     end
 end
 
@@ -158,6 +63,88 @@ function love.keypressed(key)
     if key == "space" or key == "z" or key == "up" then
         player.jump(player)
     end
+end
+
+
+---------------------------- Character interactions ------------------
+
+-- checks position xy with player's width and height to see if it would collide
+-- with any block in Block_list
+-- return first block encountered that collides with it (this can cause issues)
+-- does not check for the direction of the collision for now
+
+function Player:jump()
+    if self.state == JUMPING then
+        return -- if player is already jumping or falling, do nothing
+    end
+    self.jump_speed = DEFAULT_JUMP_SPEED
+    self.state = JUMPING
+    self.jump_time = love.timer.getTime()
+end
+
+function Player:check_collision(x, y)
+    -- print("checking collision for x: "..x.." y: "..y)
+    for i = 0, NB_BLOCKS - 1 do
+        -- print("block: "..i)
+        local bl = Block_list[i]
+        if (x < bl.x + bl.width and
+            x + self.width > bl.x and
+            y > bl.y - bl.height and
+            y - self.height < bl.y
+            ) then
+            -- print("Coordinates x: "..x.." y: "..y.." will collide with block id: "..i.."\n")
+            return bl
+        end
+    end
+    -- print("no collision found")
+    return NETHER_BLOCK
+end
+
+-- moves the player from its current position to next verified position
+-- and adapt the camera's offset
+function Player:apply_movement_with_collision(camera)
+    -- print(self.state)
+    -- save position before movement
+    self.lx = self.x
+    self.ly = self.y
+
+    self:move()
+
+    -- horizontal collision
+    local bl_x = self:check_collision(self.x, self.y)
+    if bl_x.width > 0 then
+        self.x = self.lx
+    end
+
+    -- vertical collision
+    if self.state == JUMPING then
+        if love.timer.getTime() - self.jump_time >= DRAW_INTERVAL then
+            local fy = self.y + DRAW_INTERVAL * self.jump_speed
+            local bl_y = self:check_collision(self.x, fy)
+
+            if bl_y.width > 0 then -- collision happened
+                if self.jump_speed < 0 then
+                    -- ground
+                    self.y = bl_y.y + self.height
+                    self.state = IDLE
+                else
+                    -- ceiling
+                    self.y = bl_y.y - bl_y.height
+                end
+                self.jump_speed = 0
+            else -- no collision
+                self.y = fy
+            end
+
+            -- update movespeed
+            self.jump_speed = self.jump_speed + DRAW_INTERVAL * GRAVITY
+            self.jump_time = love.timer.getTime()
+        end
+    end
+
+    -- manage camera
+    camera.offset.x = camera.offset.x - (self.x - self.lx)
+    camera.offset.y = camera.offset.y + (self.y - self.ly)
 end
 
 
