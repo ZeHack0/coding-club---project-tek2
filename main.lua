@@ -36,7 +36,7 @@ end
 
 function run_game(dt)
     player.apply_movement_with_collision(player, camera)
-    camera.align_to_entity(camera, player)
+    camera.align_world_to_player(camera, player)
     -- player.print_info(player)
     -- print()
     -- camera.print_info(camera)
