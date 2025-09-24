@@ -20,10 +20,10 @@ Cam = {
 -- it will move towards the target at this speed, if it is on top of the target,
 -- it will move at the target's speed
 
-function Cam:new(posx, posy, offsetx, offsety)
+function Cam:new(posx, posy)
     a_camera = {
         pos = {x = posx, y = posy},
-        offset = {x = offsetx, y = offsety},
+        offset = {x = 0, y = 0},
         smooth_track = 0,
         target_coord = {x = 0, y = 0},
         target_b_e = nil,

@@ -108,6 +108,6 @@ end
 
 function draw_block_list(camera)
     for i = 0, NB_BLOCKS - 1 do
-        Block_list[i].draw(Block_list[i], camera)
+        Block_list[i]:draw(camera)
     end
 end

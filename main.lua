@@ -10,9 +10,10 @@ DRAW_INTERVAL = 1 / TARGET_FPS
 last_loop_time = love.timer.getTime() * 1000
 AVG_RUN_TIME = 0
 
+require "camera"
 require "block"
 require "player"
-require "camera"
+require "world_init"
 
 function love.load()
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -24,25 +25,13 @@ function love.load()
         print("window is ded")
     end
     --player's x need to start at 0, otherwise camera's offset is fuffed
-    player = Player:new("Pier", 0, 0, 50, 50, 5, 0)
-    camera = Cam:new(player.x, player.y - (player.height / 2),
-        (SCREEN_WIDTH / 2) - (player.width / 2), (SCREEN_HEIGHT / 2) - (player.height / 2)
-    )
-    ground = Block:new(0, -60, 1000, 500, -1)
-    b1 = Block:new(500, 90, 20, 150, 4)
-    b1.set_color(b1, 1, 0, 0, 1)
-    b2 = Block:new(200, 300, 400, 100, 4)
+    main_init()
+    world_init()
 end
 
 function run_game(dt)
-    player.apply_movement_with_collision(player, camera)
-    camera.align_world_to_player(camera, player)
-    -- player.print_info(player)
-    -- print()
-    -- camera.print_info(camera)
-    -- print()
-    -- block_list_info()
-    -- print()
+    player:apply_movement_with_collision(camera)
+    camera:align_world_to_player(player)
 end
 
 function fps_limited_loop()
@@ -67,5 +56,5 @@ end
 
 function love.draw()
     draw_block_list(camera)
-    player.draw(player)
+    player:draw()
 end
