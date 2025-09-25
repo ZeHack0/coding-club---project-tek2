@@ -64,6 +64,10 @@ function love.keypressed(key)
     if key == "space" or key == "z" or key == "up" then
         player.jump(player)
     end
+    if key == "r" then
+        player.x = 0
+        player.y = player.height
+    end
 end
 
 
