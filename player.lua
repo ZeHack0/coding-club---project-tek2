@@ -158,7 +158,6 @@ function Player:draw()
     love.graphics.setColor(self.color.R, self.color.G, self.color.B, self.color.a)
     love.graphics.draw(self.image, (SCREEN_WIDTH / 2) - (self.width / 2),
         (SCREEN_HEIGHT / 2) - (self.height / 2), 0, self.width / self.image:getWidth(), self.height / self.image:getHeight())
-    love.graphics.setColor(0, 0, 0, 0)
 end
 
 

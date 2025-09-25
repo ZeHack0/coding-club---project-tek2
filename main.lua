@@ -16,8 +16,9 @@ require "player"
 require "world_init"
 
 function love.load()
+    background = love.graphics.newImage("sprites/10.png")
     love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT)
-    love.graphics.setBackgroundColor(0, 0.5, 1)
+    --love.graphics.setBackgroundColor(0, 0.5, 1)
     main_init()
     world_init()
 end
@@ -45,6 +46,7 @@ end
 
 
 function love.draw()
+    love.graphics.draw(background, 0, -175)
     draw_block_list(camera)
     player:draw()
 end

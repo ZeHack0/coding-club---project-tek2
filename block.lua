@@ -72,7 +72,6 @@ function Block:draw(camera)
     love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
     love.graphics.rectangle("fill", illusion.x, illusion.y,
     illusion.width, illusion.height)
-    love.graphics.setColor(0, 0, 0, 0)
 end
 
 
