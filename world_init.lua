@@ -1,4 +1,8 @@
 function main_init()
+    background = love.graphics.newImage("sprites/10.png")
+    background:setWrap("repeat", "repeat")    
+    quad = love.graphics.newQuad(0, 0, background:getWidth(), background:getHeight(), background:getWidth(), background:getHeight())
+
     player = Player:new("Pier", 0, 75, 50, 75, 7, 0)
     camera = Cam:new(player.x, player.y)
 end
