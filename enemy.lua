@@ -20,7 +20,7 @@ Enemy = {
     jump_speed = DEFAULT_JUMP_SPEED,
     range = 0,
     image = "not an image, but sauron is kinda sexy",
-    weapon = {x = 0, y = 0, width = 30, height = 50}
+    weapon = {x = 0, y = 0, width = 20, height = 50}
 }
 
 function Enemy:new(name, x, y, width, height, speed, range, png, state)
@@ -62,6 +62,32 @@ function Enemy:check_collision(x, y)
     return NETHER_BLOCK
 end
 
+-- does not handles direction because enemy should always be facing the player
+-- if it is attacking.
+function Enemy:is_player_in_attack_range(player)
+    if self.dir == 1 then
+        if player.x >= self.x + self.range then
+            if player.x <= self.x + self.range + self.weapon.width then
+                return 1 -- player is in range
+            else
+                return 2 -- player is too far
+            end
+        else
+            return 0 -- player is too close
+        end
+    else
+        if player.x <= self.x - self.range then
+            if player.x + player.width >= self.x - self.range - self.weapon.width then
+                return 1 -- player is in range
+            else
+                return 2 -- player is too far
+            end
+        else
+            return 0 -- player is too close
+        end
+    end
+end
+
 function Enemy:move(player)
     if self.state == ATTACKING then
         if self.x - player.x >= 0 then
@@ -71,7 +97,16 @@ function Enemy:move(player)
         end
     end
     local last_x = self.x
-    self.x = self.x + self.speed * self.dir
+    if self.state == PATROLLING then
+        self.x = self.x + self.speed * self.dir
+    elseif self.state == ATTACKING then
+        local m = self:is_player_in_attack_range(player)
+        if m == 2 then
+            self.x = self.x + self.speed * self.dir
+        elseif m == 0 then
+            self.x = self.x - self.speed * self.dir
+        end
+    end
     local bl_collision = self:check_collision(self.x, self.y)
     if bl_collision.width > 0 then
         self.x = last_x
