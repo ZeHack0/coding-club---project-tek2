@@ -2,9 +2,9 @@
 IDLE = 0
 JUMPING = 1
 
-DEFAULT_JUMP_SPEED = 850 -- pixels/second
+DEFAULT_JUMP_SPEED = 900 -- pixels/second
 
-GRAVITY = -1700 -- pixels/seconde²
+GRAVITY = -2000 -- pixels/seconde²
 
 -- have a new var for the next position wich is one that's going to change through
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
@@ -104,7 +104,7 @@ end
 -- moves the player from its current position to next verified position
 -- and adapt the camera's offset
 function Player:apply_movement_with_collision(camera)
-    -- print(self.state)
+    print(self.state)
     -- save position before movement
     self.lx = self.x
     self.ly = self.y
@@ -139,6 +139,13 @@ function Player:apply_movement_with_collision(camera)
 
             -- update movespeed
             self.jump_speed = self.jump_speed + DRAW_INTERVAL * GRAVITY
+            self.jump_time = love.timer.getTime()
+        end
+    else
+        local bl_under = self:check_collision(self.x, self.y - 1)
+        if bl_under.width < 0 then -- no ground
+            self.state = JUMPING
+            self.jump_speed = 0
             self.jump_time = love.timer.getTime()
         end
     end

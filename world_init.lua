@@ -1,5 +1,5 @@
 function main_init()
-    player = Player:new("Pier", 0, 75, 50, 75, 5, 0)
+    player = Player:new("Pier", 0, 75, 50, 75, 7, 0)
     camera = Cam:new(player.x, player.y)
 end
 
