@@ -28,8 +28,8 @@ function Player:new(name, x, y, width, height, speed, state)
         name = name,
         x = x,
         y = y,
-        lx = x, -- last x | used to handle camera movements once player is done moving
-        ly = y, -- last y | used to handle camera movements once player is done moving
+        lx = x,
+        ly = y,
         width = width,
         height = height,
         speed = speed,
@@ -73,11 +73,6 @@ end
 
 ---------------------------- Character interactions ------------------
 
--- checks position xy with player's width and height to see if it would collide
--- with any block in Block_list
--- return first block encountered that collides with it (this can cause issues)
--- does not check for the direction of the collision for now
-
 function Player:jump()
     if self.state == JUMPING then
         return -- if player is already jumping or falling, do nothing
@@ -108,7 +103,6 @@ end
 -- moves the player from its current position to next verified position
 -- and adapt the camera's offset
 function Player:apply_movement_with_collision(camera)
-    print(self.state)
     -- save position before movement
     self.lx = self.x
     self.ly = self.y
