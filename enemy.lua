@@ -9,6 +9,7 @@ NB_E = 0    -- number of enemies (and index to place next enemy)
 
 Enemy = {
     name = "Enemy, the origins, vol.1",
+    hp = 80,
     x = 0,
     y = 0,
     width = 0,
@@ -20,12 +21,13 @@ Enemy = {
     jump_speed = DEFAULT_JUMP_SPEED,
     range = 0,
     image = "not an image, but sauron is kinda sexy",
-    weapon = {x = 0, y = 0, width = 20, height = 50}
+    weapon = {x = 0, y = 0, width = 20, height = 50, dmg = 20, cooldown = 5, last_use = 0}
 }
 
-function Enemy:new(name, x, y, width, height, speed, range, png, state)
+function Enemy:new(name, hp, x, y, width, height, speed, range, png, state)
     e = {
         name = name,
+        hp = hp,
         x = x,
         y = y,
         width = width,
@@ -62,8 +64,6 @@ function Enemy:check_collision(x, y)
     return NETHER_BLOCK
 end
 
--- does not handles direction because enemy should always be facing the player
--- if it is attacking.
 function Enemy:is_player_in_attack_range(player)
     if self.dir == 1 then
         if player.x >= self.x + self.range then
@@ -116,9 +116,24 @@ function Enemy:move(player)
     end
 end
 
+function Enemy:weapon_is_on_cooldown()
+    local time = love.timer.getTime()
+    if time - self.weapon.last_use >= self.weapon.cooldown then
+        return 0
+    end
+    return 1
+end
+
 function Enemy:attack(player)
     if not (self.state == ATTACKING) then
         return
+    end
+    if self:is_player_in_attack_range(player) == 1 then
+        if self:weapon_is_on_cooldown() == 0 then
+            player.hp = player.hp - self.weapon.dmg
+            print("think fast chucklenut!")
+            self.weapon.last_use = love.timer.getTime()
+        end
     end
 end
 
@@ -127,6 +142,7 @@ end
 function run_enemies(player)
     for i = 0, NB_E - 1 do
         E_list[i]:move(player)
+        E_list[i]:attack(player)
     end
 end
 

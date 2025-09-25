@@ -24,6 +24,7 @@ end
 
 function run_game(dt)
     run_enemies(player)
+    player:is_dead()
     player:apply_movement_with_collision(camera)
     camera:align_world_to_player(player)
 end

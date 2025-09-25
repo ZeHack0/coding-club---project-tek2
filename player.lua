@@ -10,6 +10,7 @@ GRAVITY = -2000 -- pixels/seconde²
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
 Player = {
     name = "player",
+    hp = 60,
     x = 0,
     y = 0,
     width = 0,
@@ -26,6 +27,7 @@ Player = {
 function Player:new(name, x, y, width, height, speed, state)
     p = {
         name = name,
+        hp = 60,
         x = x,
         y = y,
         lx = x,
@@ -149,6 +151,14 @@ function Player:apply_movement_with_collision(camera)
     end
 end
 
+function Player:is_dead()
+    if self.hp <= 0 then
+        print("you died")
+        self.x = 0
+        self.y = self.height
+        self.hp = 60
+    end
+end
 
 ---------------------------- Player Draw -----------------------------
 

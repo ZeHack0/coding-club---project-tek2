@@ -26,5 +26,5 @@ function world_init()
     pe2 = Block:new(2250, 400, 200, 20, 4) --end 2
     pe3 = Block:new(2500, 600, 200, 20, 4) --end 3
     -- enemies
-    e1 = Enemy:new("méchant pas gentil :3", 1469, 75, 50, 75, 5, 100, "sprites/pierrick_walk.png", ATTACKING)
+    e1 = Enemy:new("méchant pas gentil :3", 80, 1469, 75, 50, 75, 5, 100, "sprites/pierrick_walk.png", ATTACKING)
 end
