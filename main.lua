@@ -13,6 +13,7 @@ AVG_RUN_TIME = 0
 require "camera"
 require "block"
 require "player"
+require "enemy"
 require "world_init"
 
 function love.load()
@@ -22,6 +23,7 @@ function love.load()
 end
 
 function run_game(dt)
+    run_enemies(player)
     player:apply_movement_with_collision(camera)
     camera:align_world_to_player(player)
 end
@@ -47,5 +49,6 @@ function love.draw()
     quad:setViewport(camera.offset.x * -0.4, 300 + camera.offset.y * 0.1, background:getWidth(), background:getHeight())
     love.graphics.draw(background, quad, 0, 0, 0)
     draw_block_list(camera)
+    draw_enemies(camera)
     player:draw()
 end

@@ -26,8 +26,7 @@ function world_init()
     pe2 = Block:new(2250, 400, 200, 20, 4) --end 2
     pe3 = Block:new(2500, 600, 200, 20, 4) --end 3
     -- fake enemies
-    e1 = Block:new(800, 75, 50, 75, 4)
-    e1:set_color(1, 0, 0, 1)
+    e1 = Enemy:new("méchant pas gentil :3", 800, 75, 50, 75, 5, 50, "sprites/pierrick_walk.png", ATTACKING)
     e2 = Block:new(1469, 75, 50, 75, 4)
     e2:set_color(1, 0, 0, 1)
 end
