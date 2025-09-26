@@ -48,8 +48,8 @@ end
 
 
 function love.draw()
-    quad:setViewport(camera.offset.x * -0.4, SCREEN_HEIGHT / 8 + camera.offset.y * 0.1, background:getWidth(), background:getHeight())
-    love.graphics.draw(background, quad, 0, 0, 0)
+    bgquad:setViewport(camera.offset.x * -0.4, SCREEN_HEIGHT / 8 + camera.offset.y * 0.1, background:getWidth(), background:getHeight())
+    love.graphics.draw(background, bgquad, 0, 0, 0)
     draw_block_list(camera)
     draw_enemies(camera)
     player:draw()

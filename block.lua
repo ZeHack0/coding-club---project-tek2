@@ -18,7 +18,8 @@ Block = {
     width = 0,
     height = 0,
     col_dir = 4,
-    color = {r = 0, g = 1, b = 0, a = 1}
+    color = {r = 0, g = 1, b = 0, a = 1},
+    image = nil
 }
 
 NETHER_BLOCK = { -- used to send a "null" block when no collision detected when movin
@@ -27,18 +28,25 @@ NETHER_BLOCK = { -- used to send a "null" block when no collision detected when 
     width = -1,
     height = -1,
     col_dir = 69,
-    color = {r = 0, g = 1, b = 0, a = 1}
+    color = {r = 0, g = 1, b = 0, a = 1},
+    image = "the block is a lie"
 }
 
 -- default color is green, look a set_color to change it
-function Block:new(x, y, width, height, col_dir)
+function Block:new(x, y, width, height, col_dir, png)
+    if not (png == nil) then
+        gpng = love.graphics.newImage(png)
+    else
+        gpng = nil
+    end
     b = {
         x = x,
         y = y,
         width = width,
         height = height,
         col_dir = col_dir,
-        color = {r = 0, g = 1, b = 0, a = 1}
+        color = {r = 0, g = 1, b = 0, a = 1},
+        image = gpng
     }
     setmetatable(b, self)
     self.__index = self
@@ -51,7 +59,6 @@ end
 ---------------------------- Block Draw ------------------------------
 
 -- self will not bee altered nor drawn, illusion is what you will see of it
--- AND WHY IS BLOCK1 IN THE DAMN GROUND ON SCREEN BUT NOT IN COORD????
 function Block:draw(camera)
     local illusion = {
         x = self.x + camera.offset.x,
@@ -59,23 +66,19 @@ function Block:draw(camera)
         width = self.width,
         height = self.height
     }
-
-    -- debug
-    -- print("\27[34morigin block: \27[0;0m")
-    -- print("x: "..self.x.." y: "..self.y)
-    -- print(self.width.."x"..self.height)
-    -- print("\27[36millusion: \27[0;0m")
-    -- print("x: "..illusion.x.." y: "..illusion.y)
-    -- print(illusion.width.."x"..illusion.height)
-    -- print()
-
-    love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
-    love.graphics.rectangle("fill", illusion.x, illusion.y,
-    illusion.width, illusion.height)
+    if self.image == nil then
+        love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
+        love.graphics.rectangle("fill", illusion.x, illusion.y,
+        illusion.width, illusion.height)
+    else
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.draw(self.image, illusion.x, illusion.y, 0, illusion.width / self.image:getWidth(), illusion.height / self.image:getHeight())
+    end
 end
 
 
 ---------------------------- Block Set something ---------------------
+
 function Block:set_coord(x, y)
     self.x = x
     self.y = y
