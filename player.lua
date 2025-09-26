@@ -2,9 +2,9 @@
 IDLE = 0
 JUMPING = 1
 
-DEFAULT_JUMP_SPEED = 900 -- pixels/second
+DEFAULT_JUMP_SPEED = 1050 -- pixels/second
 
-GRAVITY = -2000 -- pixels/seconde²
+GRAVITY = -2500 -- pixels/seconde²
 
 -- have a new var for the next position wich is one that's going to change through
 -- gravity, movements etc, so when all movement are done we check if new position is fuf
@@ -68,7 +68,8 @@ function love.keypressed(key)
     end
     if key == "r" then
         player.x = 0
-        player.y = player.height
+        player.y = player.height + 50
+        player.jump_speed = 0
     end
 end
 
@@ -152,10 +153,10 @@ function Player:apply_movement_with_collision(camera)
 end
 
 function Player:is_dead()
-    if self.hp <= 0 then
+    if self.hp <= 0 or self.y < -750 then
         print("you died")
         self.x = 0
-        self.y = self.height
+        self.y = self.height + 50
         self.hp = 60
     end
 end
