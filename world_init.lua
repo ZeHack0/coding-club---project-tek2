@@ -10,12 +10,12 @@ end
 function world_init()
     -- ground
     g0 = Block:new(-500, 0, 1800, 1400, -1) --ground 0
-    g2 = Block:new(1500, 100, 1300, 1400, -1)  --ground 1
+    g2 = Block:new(1498, 100, 1300, 1400, -1)  --ground 1
     -- platform
     ps1 = Block:new(350, 69, 60, 69, 4)     --stair1
     ps2 = Block:new(600, 140, 60, 140, 4)   --stair2
     ps3 = Block:new(975, 250, 60, 250, 4)   --stair3
-    ps3 = Block:new(1100, 35, 60, 35, 4)    --stair3
+    ps3 = Block:new(1100, 35, 60, 35, 4)    --stair4
 
     pa1 = Block:new(1700, 250, 50, 150, 4)  --arena1
     pa2 = Block:new(1850, 375, 300, 20, 4)  --arena roof
