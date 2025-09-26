@@ -2,8 +2,8 @@
 
 _G.love = require("love")
 
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+SCREEN_WIDTH = 1600
+SCREEN_HEIGHT = 900
 
 TARGET_FPS = 60
 DRAW_INTERVAL = 1 / TARGET_FPS
@@ -47,7 +47,7 @@ end
 
 
 function love.draw()
-    quad:setViewport(camera.offset.x * -0.4, 300 + camera.offset.y * 0.1, background:getWidth(), background:getHeight())
+    quad:setViewport(camera.offset.x * -0.4, SCREEN_HEIGHT / 8 + camera.offset.y * 0.1, background:getWidth(), background:getHeight())
     love.graphics.draw(background, quad, 0, 0, 0)
     draw_block_list(camera)
     draw_enemies(camera)
