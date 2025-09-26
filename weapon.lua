@@ -121,7 +121,7 @@ function Weapon:enemy_draw(enemy, camera)
         if enemy.dir == 1 then
             love.graphics.draw(self.image, illusion.x + self.width, illusion.y, 3.14/2, illusion.width, illusion.height)
         else
-            love.graphics.draw(self.image, illusion.x + self.width, illusion.y, -3.14/2, illusion.width * -1, illusion.height)
+            love.graphics.draw(self.image, illusion.x, illusion.y, -3.14/2, illusion.width * -1, illusion.height)
         end
     end
 end
