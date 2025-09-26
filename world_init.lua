@@ -9,8 +9,8 @@ end
 
 function world_init()
     -- ground
-    g0 = Block:new(-500, 0, 1800, 1200, -1) --ground 0
-    g2 = Block:new(1500, 100, 1300, 1200, -1)  --ground 1
+    g0 = Block:new(-500, 0, 1800, 1300, -1) --ground 0
+    g2 = Block:new(1500, 100, 1300, 1300, -1)  --ground 1
     -- platform
     ps1 = Block:new(350, 69, 60, 69, 4)     --stair1
     ps2 = Block:new(600, 140, 60, 140, 4)   --stair2
