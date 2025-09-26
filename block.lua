@@ -101,7 +101,7 @@ end
 
 function block_list_info()
     print("Block List has "..NB_BLOCKS.." blocks in it:")
-    for i = 0, NB_BLOCKS - 1 do
+    for i = 0, NB_BLOCKS - 2 do
         print("    Block "..i..":")
         print("          coord x: "..Block_list[i].x.." y: "..Block_list[i].y)
         print("          size "..Block_list[i].width.."x"..Block_list[i].height)

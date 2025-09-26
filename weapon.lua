@@ -35,7 +35,7 @@ function Weapon:new(width, height, dmg, cooldown, png)
 end
 
 function Weapon:check_collision(x, y)
-    for i = 0, NB_BLOCKS - 1 do
+    for i = 0, NB_BLOCKS - 2 do
         local bl = Block_list[i]
         if (x < bl.x + bl.width and
             x + self.width > bl.x and

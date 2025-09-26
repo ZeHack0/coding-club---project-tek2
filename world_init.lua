@@ -26,4 +26,7 @@ function world_init()
     pe3 = Block:new(3250, 500, 200, 20, 4, nil)  --end 3
     -- enemies
     e1 = Enemy:new("méchant pas gentil :3", 80, 1900, 175, 50, 75, 5, 100, "sprites/pierrick_walk.png", ATTACKING)
+
+    --camera_block
+    cam_block = Block:new(3300, 550, 50, 50, 4, "sprites/crate_of_camera.png")
 end

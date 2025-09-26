@@ -87,7 +87,7 @@ end
 
 function Player:check_collision(x, y)
     -- print("checking collision for x: "..x.." y: "..y)
-    for i = 0, NB_BLOCKS - 1 do
+    for i = 0, NB_BLOCKS - 2 do
         -- print("block: "..i)
         local bl = Block_list[i]
         if (x < bl.x + bl.width and
@@ -161,6 +161,21 @@ function Player:is_dead()
     end
 end
 
+function Player:collected_camera()
+    if WON == 1 then
+        return
+    end
+    if (self.x < Block_list[NB_BLOCKS - 1].x + Block_list[NB_BLOCKS - 1].width and
+        self.x + self.width > Block_list[NB_BLOCKS - 1].x and
+        self.y > Block_list[NB_BLOCKS - 1].y - Block_list[NB_BLOCKS - 1].height and
+        self.y - self.height < Block_list[NB_BLOCKS - 1].y
+    ) then
+        WON = 1
+        WON_TIME = love.timer.getTime()
+    end
+end
+
+
 ---------------------------- Player Draw -----------------------------
 
 function Player:draw()
@@ -169,6 +184,9 @@ function Player:draw()
         (SCREEN_HEIGHT / 2) - (self.height / 2), 0, self.width / self.image:getWidth(), self.height / self.image:getHeight())
 end
 
+function Player:draw_ui()
+    love.graphics.print("PV: "..self.hp, 20, 20)
+end
 
 ---------------------------- Player Debug ----------------------------
 
