@@ -115,14 +115,6 @@ function Enemy:move(player)
     end
 end
 
-function Enemy:weapon_is_on_cooldown()
-    local time = love.timer.getTime()
-    if time - self.weapon.last_use >= self.weapon.cooldown then
-        return 0
-    end
-    return 1
-end
-
 function Enemy:check_LoS(player)
     if self.dir == 1 then --player is to the right
         local LoS = { -- Line of Sight block
