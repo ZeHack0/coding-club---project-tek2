@@ -4,9 +4,6 @@ ATTACKING = 1  -- follows player up to his attack range and attack
 
 EDJS = 900 -- pixels/s (Enemy default jump speed)
 
-E_list = {} -- list of all enemies
-NB_E = 0    -- number of enemies (and index to place next enemy)
-
 Enemy = {
     name = "Enemy, the origins, vol.1",
     hp = 80,
@@ -20,6 +17,7 @@ Enemy = {
     jump_time = EDJS,
     jump_speed = DEFAULT_JUMP_SPEED,
     range = 0,
+    LoS_range = 0, -- Line of Sight range
     image = "not an image, but sauron is kinda sexy",
     weapon = {x = 0, y = 0, width = 20, height = 50, dmg = 20, cooldown = 5, last_use = 0}
 }
@@ -38,7 +36,10 @@ function Enemy:new(name, hp, x, y, width, height, speed, range, png, state)
         jump_time = 0,
         jump_speed = EDJS,
         range = range,
-        image = love.graphics.newImage(png)
+        LoS_range = range + 300,
+        image = love.graphics.newImage(png),
+        weapon = {x = 0, y = 0, width = 20, height = 50, dmg = 20, cooldown = 5, last_use = 0},
+        hammer = Weapon:new(50, 30, 20, 5, "sprites/Mjolnir.png")
     }
     setmetatable(e, self)
     self.__index = self
@@ -124,16 +125,51 @@ function Enemy:weapon_is_on_cooldown()
     return 1
 end
 
+function Enemy:check_LoS(player)
+    if self.dir == 1 then --player is to the right
+        local LoS = { -- Line of Sight block
+            x = self.x,
+            y = self.y,
+            width = self.width + self.LoS_range,
+            height = self.height / 2
+        }
+        if (LoS.x < player.x + player.width and
+            LoS.x + self.width + self.LoS_range > player.x and
+            LoS.y > player.y - player.height and
+            LoS.y - (self.height / 2) < player.y
+        ) then
+            self.state = ATTACKING
+        else
+            self.state = PATROLLING
+        end
+    else --player is to the left
+        local LoS = { -- Line of Sight block
+            x = self.x - self.LoS_range,
+            y = self.y,
+            width = self.width + self.LoS_range,
+            height = self.height / 2
+        }
+        if (LoS.x < player.x + player.width and
+            LoS.x + self.width + self.LoS_range > player.x and
+            LoS.y > player.y - player.height and
+            LoS.y - (self.height / 2) < player.y
+        ) then
+            self.state = ATTACKING
+        else
+            self.state = PATROLLING
+        end
+    end
+end
+
 function Enemy:attack(player)
     if not (self.state == ATTACKING) then
         return
     end
-    if self:is_player_in_attack_range(player) == 1 then
-        if self:weapon_is_on_cooldown() == 0 then
-            player.hp = player.hp - self.weapon.dmg
-            print("think fast chucklenut!")
-            self.weapon.last_use = love.timer.getTime()
-        end
+    if self:is_player_in_attack_range(player) == 1 and self.hammer.state == READY then
+        self.hammer.state = ON_COOLDOWN
+        self.hammer.last_use = love.timer.getTime()
+        self.hammer:adapt_to_enemy(self)
+        print("think fast chucklenut!")
     end
 end
 
@@ -141,8 +177,10 @@ end
 --and behavior change
 function run_enemies(player)
     for i = 0, NB_E - 1 do
+        E_list[i]:check_LoS(player)
         E_list[i]:move(player)
         E_list[i]:attack(player)
+        E_list[i].hammer:run_weapon(player)
     end
 end
 
@@ -163,6 +201,7 @@ function Enemy:world_draw(camera)
     else
         love.graphics.draw(self.image, illusion.x + self.width, illusion.y, 0, illusion.width * -1, illusion.height)
     end
+    self.hammer:enemy_draw(self, camera)
         -- love.graphics.draw(self.image, (SCREEN_WIDTH / 2) - (self.width / 2),
     --     (SCREEN_HEIGHT / 2) - (self.height / 2), 0, self.width / self.image:getWidth(), self.height / self.image:getHeight())
 end

@@ -12,6 +12,7 @@ AVG_RUN_TIME = 0
 
 require "camera"
 require "block"
+require "weapon"
 require "player"
 require "enemy"
 require "world_init"
