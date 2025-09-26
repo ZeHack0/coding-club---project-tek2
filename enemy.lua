@@ -18,8 +18,7 @@ Enemy = {
     jump_speed = DEFAULT_JUMP_SPEED,
     range = 0,
     LoS_range = 0, -- Line of Sight range
-    image = "not an image, but sauron is kinda sexy",
-    weapon = {x = 0, y = 0, width = 20, height = 50, dmg = 20, cooldown = 5, last_use = 0}
+    image = "not an image, but sauron is kinda sexy"
 }
 
 function Enemy:new(name, hp, x, y, width, height, speed, range, png, state)
@@ -38,7 +37,6 @@ function Enemy:new(name, hp, x, y, width, height, speed, range, png, state)
         range = range,
         LoS_range = range + 300,
         image = love.graphics.newImage(png),
-        weapon = {x = 0, y = 0, width = 20, height = 50, dmg = 20, cooldown = 5, last_use = 0},
         hammer = Weapon:new(50, 30, 20, 5, "sprites/Mjolnir.png")
     }
     setmetatable(e, self)
@@ -68,7 +66,7 @@ end
 function Enemy:is_player_in_attack_range(player)
     if self.dir == 1 then
         if player.x >= self.x + self.range then
-            if player.x <= self.x + self.range + self.weapon.width then
+            if player.x <= self.x + self.range + self.hammer.width then
                 return 1 -- player is in range
             else
                 return 2 -- player is too far
@@ -78,7 +76,7 @@ function Enemy:is_player_in_attack_range(player)
         end
     else
         if player.x <= self.x - self.range then
-            if player.x + player.width >= self.x - self.range - self.weapon.width then
+            if player.x + player.width >= self.x - self.range - self.hammer.width then
                 return 1 -- player is in range
             else
                 return 2 -- player is too far
