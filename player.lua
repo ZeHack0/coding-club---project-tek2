@@ -2,7 +2,7 @@
 IDLE = 0
 JUMPING = 1
 
-DEFAULT_JUMP_SPEED = 1050 -- pixels/second
+DEFAULT_JUMP_SPEED = 1100 -- pixels/second
 
 GRAVITY = -2500 -- pixels/seconde²
 
@@ -84,8 +84,8 @@ function Player:jump()
 end
 
 function Player:update_physics()
-    self.jump_speed = self.jump_speed + GRAVITY * DELTA_TIME
     self.y = self.y + self.jump_speed * DELTA_TIME
+    self.jump_speed = self.jump_speed + GRAVITY * DELTA_TIME
 end
 
 function Player:check_collision(x, y)
