@@ -17,7 +17,6 @@ Player = {
     height = 0,
     speed = 5,
     state = 0,
-    jump_time = 0,
     jump_speed = 10
 }
 
@@ -36,8 +35,7 @@ function Player:new(name, x, y, width, height, speed, state)
         height = height,
         speed = speed,
         state = state,
-        jump_time = 0,
-        jump_speed = 10,
+        jump_speed = 0,
         color = {R = 1, G = 1, B = 1, a = 255},
         image = love.graphics.newImage("sprites/pierrick_v0.png")
     }
@@ -85,6 +83,11 @@ function Player:jump()
     self.jump_time = love.timer.getTime()
 end
 
+function Player:update_physics()
+    self.jump_speed = self.jump_speed + GRAVITY * DRAW_INTERVAL
+    self.y = self.y + self.jump_speed * DRAW_INTERVAL
+end
+
 function Player:check_collision(x, y)
     -- print("checking collision for x: "..x.." y: "..y)
     for i = 0, NB_BLOCKS - 2 do
@@ -118,36 +121,28 @@ function Player:apply_movement_with_collision(camera)
         self.x = self.lx
     end
 
+    self:update_physics()
+
     -- vertical collision
-    if self.state == JUMPING then
-        if love.timer.getTime() - self.jump_time >= DRAW_INTERVAL then
-            local fy = self.y + DRAW_INTERVAL * self.jump_speed
-            local bl_y = self:check_collision(self.x, fy)
-
-            if bl_y.width > 0 then -- collision happened
-                if self.jump_speed < 0 then
-                    -- ground
-                    self.y = bl_y.y + self.height
-                    self.state = IDLE
-                else
-                    -- ceiling
-                    self.y = bl_y.y - bl_y.height
-                end
-                self.jump_speed = 0
-            else -- no collision
-                self.y = fy
-            end
-
-            -- update movespeed
-            self.jump_speed = self.jump_speed + DRAW_INTERVAL * GRAVITY
-            self.jump_time = love.timer.getTime()
+    local bl_y = self:check_collision(self.x, self.y)
+    if bl_y.width > 0 then
+        if self.jump_speed < 0 then
+            -- ground
+            self.y = bl_y.y + self.height
+            self.state = IDLE
+        else
+            -- ceiling
+            self.y = bl_y.y - bl_y.height
         end
-    else
+        self.jump_speed = 0
+    end
+
+    -- apply gravity
+    if self.state ~= JUMPING then
         local bl_under = self:check_collision(self.x, self.y - 1)
-        if bl_under.width < 0 then -- no ground
+        if bl_under.width < 0 then
             self.state = JUMPING
             self.jump_speed = 0
-            self.jump_time = love.timer.getTime()
         end
     end
 end

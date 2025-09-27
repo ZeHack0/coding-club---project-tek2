@@ -39,7 +39,7 @@ end
 function fps_limited_loop()
     local current_time = love.timer.getTime() * 1000 -- *1000 to transform into ms
     local delta_time = current_time - last_loop_time
-    
+
     if (current_time - last_loop_time >= DRAW_INTERVAL * 1000 - AVG_RUN_TIME) then
         last_loop_time = love.timer.getTime() * 1000 -- restart clock
         run_game(delta_time)
