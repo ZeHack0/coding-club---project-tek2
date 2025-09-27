@@ -3,7 +3,7 @@ function main_init()
     background:setWrap("repeat", "repeat")
     bgquad = love.graphics.newQuad(0, 0, background:getWidth(), background:getHeight(), background:getWidth(), background:getHeight())
 
-    player = Player:new("Pier", 0, 75 + 50, 50, 75, 7, 0)
+    player = Player:new("Pier", 0, 75, 50, 75, 7, 0)
     camera = Cam:new(player.x, player.y)
 end
 
@@ -21,11 +21,9 @@ function world_init()
     pa2 = Block:new(1850, 375, 300, 20, 4, nil)  --arena roof
     pa3 = Block:new(2250, 250, 50, 150, 4, nil)  --arena2
 
-    pe1 = Block:new(2700, 250, 207, 20, 4, nil)  --end 1
-    pe2 = Block:new(2975, 375, 200, 20, 4, nil)  --end 2
     pe3 = Block:new(3250, 500, 200, 20, 4, nil)  --end 3
     -- enemies
-    e1 = Enemy:new("méchant pas gentil :3", 80, 1900, 175, 50, 75, 5, 100, "sprites/pierrick_walk.png", ATTACKING)
+    --e1 = Enemy:new("méchant pas gentil :3", 80, 1900, 175, 50, 75, 5, 100, "sprites/pierrick_walk.png", ATTACKING)
 
     --camera_block
     cam_block = Block:new(3300, 550, 50, 50, 4, "sprites/crate_of_camera.png")

@@ -48,12 +48,8 @@ end
 ---------------------------- User interactions -----------------------
 
 function Player:move()
-    if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
-        self.x = self.x + self.speed
-    end
-    if love.keyboard.isDown("left") or love.keyboard.isDown("q") then
-        self.x = self.x - self.speed
-    end
+    -- Pierrick needs to move
+    -- TODO
 end
 
 -- keys that should react only when pressed and not continuously pressed
@@ -66,7 +62,7 @@ function love.keypressed(key)
     end
     if key == "r" then
         player.x = 0
-        player.y = player.height + 50
+        player.y = player.height
         player.jump_speed = 0
     end
 end
@@ -84,8 +80,8 @@ function Player:jump()
 end
 
 function Player:update_physics()
-    self.y = self.y + self.jump_speed * DELTA_TIME
-    self.jump_speed = self.jump_speed + GRAVITY * DELTA_TIME
+    -- wtf no jump
+    -- TODO
 end
 
 function Player:check_collision(x, y)
