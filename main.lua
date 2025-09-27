@@ -6,7 +6,7 @@ SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 
 TARGET_FPS = 60
-DRAW_INTERVAL = 1 / TARGET_FPS
+DELTA_TIME = 1 / TARGET_FPS
 last_loop_time = love.timer.getTime() * 1000
 AVG_RUN_TIME = 0
 WON_TIME = 0
@@ -40,7 +40,7 @@ function fps_limited_loop()
     local current_time = love.timer.getTime() * 1000 -- *1000 to transform into ms
     local delta_time = current_time - last_loop_time
 
-    if (current_time - last_loop_time >= DRAW_INTERVAL * 1000 - AVG_RUN_TIME) then
+    if (current_time - last_loop_time >= DELTA_TIME * 1000 - AVG_RUN_TIME) then
         last_loop_time = love.timer.getTime() * 1000 -- restart clock
         run_game(delta_time)
         AVG_RUN_TIME = (AVG_RUN_TIME * 0.7 +

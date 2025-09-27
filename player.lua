@@ -84,8 +84,8 @@ function Player:jump()
 end
 
 function Player:update_physics()
-    self.jump_speed = self.jump_speed + GRAVITY * DRAW_INTERVAL
-    self.y = self.y + self.jump_speed * DRAW_INTERVAL
+    self.jump_speed = self.jump_speed + GRAVITY * DELTA_TIME
+    self.y = self.y + self.jump_speed * DELTA_TIME
 end
 
 function Player:check_collision(x, y)
